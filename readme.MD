@@ -1,0 +1,1 @@
+# SSR React App Template
