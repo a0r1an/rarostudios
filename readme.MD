@@ -1,1 +1,1 @@
-# SSR React App Template
+# Next Website Template
