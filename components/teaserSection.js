@@ -3,18 +3,12 @@ import YoutubeTeaser from '../components/YoutubeTeaser'
 class TeaserSection extends React.Component {
   render() {
     const { data, dataType } = this.props;
-    // let button;
-    // if(error) {
-    //   return <div>
-    //     < h3>{error}</h3>
-    //   </div>;
-    // }
-    // if (isLoading) {
-    //   return <div>
-    //     <h2>Latest {topic}</h2>
-    //     <p>Loading ...</p>
-    //   </div>;
-    // }
+    if (data.length < 1) {
+      return <div>
+        <h2>Latest {dataType}</h2>
+        <p>Sorry, No {dataType} to show...</p>
+      </div>;
+    }
     return (
       <div>
         <h2>Latest {dataType}</h2>
