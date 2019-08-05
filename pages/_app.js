@@ -3,11 +3,13 @@ import App, { Container } from 'next/app'
 import Link from 'next/link'
 import NProgress from 'nprogress'
 import Router from 'next/router'
-
-const linkStyle = {
-  margin: '0 10px 0 0'
+import { ThemeProvider } from 'styled-components'
+const theme = {
+  colors: {
+    primary: '#5fff4f',
+    secondary: '#ff4f4f'
+  }
 }
-
 Router.events.on('routeChangeStart', url => {
   console.log(`Loading: ${url}`)
   NProgress.start()
@@ -30,7 +32,9 @@ export default class MyApp extends App {
     const { Component, pageProps } = this.props
     return (
       <Container>
-        <Component {...pageProps} />
+        <ThemeProvider theme={theme}>
+          <Component {...pageProps} />
+        </ThemeProvider>
       </Container>
     )
   }
