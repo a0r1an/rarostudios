@@ -1,0 +1,19 @@
+html {
+  font-size: 16px;
+}
+body {
+  background: #FFFFFF;
+  /* background: #120025 url(/static/img/home/spaceBackground.png) center/50%; */
+  color: #000000;
+  overflow-x: hidden;
+  font-family: 'roboto', sans-serif;
+}
+.container {
+  max-width: 1024px;
+  width: 90%;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+img{
+  max-width: 100%;
+}
