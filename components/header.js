@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import Navbar from '../components/Nav'
+import Navbar from '../components/nav'
 import styled from 'styled-components'
 import Logo from '../components/logo'
 const HeaderArea = styled.header`
