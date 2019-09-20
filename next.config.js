@@ -1,12 +1,12 @@
-// const { parsed: localEnv } = require('dotenv').config()
-// const webpack = require('webpack')
+const { parsed: localEnv } = require('dotenv').config()
+const webpack = require('webpack')
 
 module.exports = {
-  // webpack(config) {
-  //   config.plugins.push(new webpack.EnvironmentPlugin(localEnv))
-  //   config.node = {fs: "empty"};
-  //   return config
-  // }
+  webpack(config) {
+    config.plugins.push(new webpack.EnvironmentPlugin(localEnv))
+    config.node = {fs: "empty"};
+    return config
+  },
   env: {
     SITE_TITLE: process.env.SITE_TITLE,
     YOUTUBE_API_KEY:process.env.YOUTUBE_API_KEY,
