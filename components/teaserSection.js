@@ -1,51 +1,69 @@
+import Link from 'next/link'
 import YoutubeTeaser from '../components/YoutubeTeaser'
-import SoundcloudTeaser from '../components/soundcloudTeaser'
-import PostsTeaser from '../components/postsTeaser'
+import SpreakerTeaser from '../components/spreakerTeaser'
+import StoriesTeaser from '../components/storiesTeaser'
 import styled from 'styled-components'
+import { InView } from 'react-intersection-observer'
+import {animateElement} from '../js/showBackground.js'
 
 const TeaserArea = styled.section`
-  padding: 3rem 0;
-  font-family: 'roboto', serif;
+  background: #f7f7f7;
+  padding: 4rem 2rem;
+  position: relative;
+  min-height: 600px;
+  .container {
+    position: relative;
+    z-index: 1;
+  }
+  .hiddenBackground{
+    position: absolute;
+    width: 90%;
+    height: 0%;
+    background: #fff;
+    /* top: 5%;
+    left: 5%; */
+    z-index:0;
+  }
   h2 {
-    font-size: 1em;
+    z-index:1;
+    color: #00000042;
+    font-size: .875em;
     text-transform: uppercase;
     font-family: 'Roboto slab', serif;
     letter-spacing: 1px;
-    text-align: center;
     margin: 0 0 2rem;
-  }
-  span {
-    margin: .25rem 0 0;
-    display: block;
-    font-size: .875em;
+    position: relative;
+    display: inline-block;
+    .border {
+      background-color: #00000042; 
+      bottom: 0;
+      content: '';
+      display: block;
+      height: 2px;
+      left: 0;
+      bottom: -10px;
+      position: absolute;
+      /* transform: translate(-50%,0); */
+      width: 0px;
+    }
   }
   h3 {
-    margin: .5rem 0 0;
+    margin: 0 0 2rem;
     font-size: 1.5em;
+      color: #000;
     a {
-      color: #fff;
+      color: #000;
       text-decoration: none;
     }
   }
-  .sectionoff {
-    margin: 0 4rem;
+  .date{
+    color: #acacac;
+  }
+  .grid-two {
+    margin: 0 2rem 2rem;
     display: grid;
-    grid-template-rows: [first] 1fr [second] 1fr [third] auto [end];
-    grid-row-gap: 6rem;
-  }
-  .videoContainer {
-    justify-self: start;
-    overflow:hidden;
-    padding-bottom:56.25%;
-    position:relative;
-    height:0;
-  }
-  .videoContainer iframe{
-    left:0;
-    top:0;
-    height:100%;
-    width:100%;
-    position:absolute;
+    grid-template-rows: [first] 1fr [second] 1fr [end];
+    grid-row-gap: 3rem;
   }
   .button {
     display: block;
@@ -56,15 +74,20 @@ const TeaserArea = styled.section`
     width: 100%;
     text-align:center;
     padding: 10px 0;
+    margin: 0 auto;
+    max-height: 20px;
   }
   @media (min-width: 1024px) {
-    .sectionoff {
+    h2 {
+      transform: translateY(0px);
+    }
+    .grid-two {
       display: grid;
       grid-template-columns: [abc] 1fr [bca] 1fr [end];
       grid-column-gap: 3rem;
       grid-template-rows: [first] 1fr [second] auto;
     }
-    .button {
+    .buttonContainer {
       grid-column-start: abc;
       margin: 0 auto;
       grid-column-end: end;
@@ -73,8 +96,16 @@ const TeaserArea = styled.section`
 `
 
 class TeaserSection extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+  triggerAnimation(){
+    animateElement(this.hiddenBackground,'1500','height','90%','easeInOutQuint')
+    animateElement(this.border,'1500','width','50px','easeInOutQuint')
+    animateElement(this.headline,'1500','translateY','-50,0','easeInOutQuint')
+  }
   render() {
-    const { data, dataType,color } = this.props;
+    const { data, dataType } = this.props;
     if (data.length < 1) {
       return <div>
         <h2>Latest {dataType}</h2>
@@ -82,31 +113,47 @@ class TeaserSection extends React.Component {
       </div>;
     }
     return (
-      <TeaserArea style={{background: color}}>
+      <TeaserArea>
+        <div className="hiddenBackground" ref={hiddenBackground => (this.hiddenBackground = hiddenBackground)}></div>
         <div className="container">
-          <h2>Latest {dataType}</h2>
+        <InView triggerOnce="true" as="div" onChange={(inView, entry) => {if(inView){this.triggerAnimation()}}}>
+          <h2 ref={headline => (this.headline = headline)}>Latest {dataType} <div className="border" ref={border => (this.border = border)}></div></h2>
+          </InView>
           {dataType == 'videos' &&
             <div className="sectionoff">
-              {data.map(item =>
-                <YoutubeTeaser key={item.id} content={item} />
-              )}
-              <a className="button" target="_blank" href={`https://www.youtube.com/channel/${process.env.YOUTUBE_CHANNEL_ID}`}>See all {dataType}</a>
+              <div className="grid-two">
+                {data.map(item =>
+                  <YoutubeTeaser key={item.id} content={item} />
+                )}
+              </div>
+              <InView triggerOnce="true" as="div" onChange={(inView, entry) => {if(inView){this.triggerAnimation()}}}>
+                <a className="button buttonContainer" target="_blank" href={`https://www.youtube.com/channel/${process.env.YOUTUBE_CHANNEL_ID}`}>See all {dataType}</a>
+              </InView>
+              
             </div>
           }
           {dataType == 'podcasts' &&
             <div className="sectionoff">
-              {data.map(item =>
-                <SoundcloudTeaser key={item.id} content={item} />
-              )}
-              <a className="button" target="_blank" href={`https://soundcloud.com/${process.env.PODCAST_CHANNEL}`}>See all {dataType}</a>
+              <div className="grid-two">
+                {data.map(item =>
+                  <SpreakerTeaser key={item.id} content={item} />
+                )}
+              </div>
+              <InView triggerOnce="true" as="div" onChange={(inView, entry) => {if(inView){this.triggerAnimation()}}}>
+                <a className="button buttonContainer" target="_blank" href={`https://www.spreaker.com/user/${process.env.PODCAST_CHANNEL}`}>See all {dataType}</a>
+              </InView>
             </div>
           }
-          {dataType == 'posts' &&
+          {dataType == 'stories' &&
             <div className="sectionoff">
               {data.map(item =>
-                <PostsTeaser key={item.id} content={item} />
+                <StoriesTeaser key={item.id} content={item} />
               )}
-              <a className="button" target="_blank" href={`${process.env.URL}/posts`}>See all {dataType}</a>
+              {/* <InView triggerOnce="true" as="div" onChange={(inView, entry) => {if(inView){this.triggerAnimation()}}}>
+                <Link href="/stories">
+                  <a className="button buttonContainer">See all {dataType}</a>
+                </Link>
+              </InView> */}
             </div>
           }
         </div>

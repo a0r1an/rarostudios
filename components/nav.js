@@ -36,7 +36,7 @@ const Nav = styled.nav`
     height: 6px;
     margin-bottom: 5px;
     position: relative;
-    background: #fff;
+    background: #000;
     border-radius: 3px;
     z-index: 1;
     transform-origin: 4px 0px;
@@ -113,17 +113,25 @@ class Navbar extends React.Component{
   render() {
     return (
       <Nav>
-        <input type="checkbox" className="navInit" checked={this.props.navChecked} onChange={this.props.navDecide} />
+        <input type="checkbox" className="navInit" checked={this.props.navChecked} onChange={this.props.navDecideState} />
         <div className="hamburger" >
           <span></span>
           <span></span>
           <span></span>
         </div>
         <ul className="nav_menu">
-          <li><a href="#">VIDEOS</a></li>
-          <li><a href="#">BLOG</a></li>
-          <li><a href="#">PODCAST</a></li>
-          <li><a href="#">ABOUT</a></li>
+          {/* <li>
+            <Link href="/stories">
+              <a>STORIES</a>
+            </Link>
+          </li> */}
+          <li><a href={`https://www.spreaker.com/user/${process.env.PODCAST_CHANNEL}`} target="_blank">PODCAST</a></li>
+          <li><a href={`https://www.youtube.com/channel/${process.env.YOUTUBE_CHANNEL_ID}`} target="_blank">VIDEOS</a></li>
+          <li>
+            <Link href="/about">
+              <a>ABOUT</a>
+            </Link>
+          </li>
         </ul>
       </Nav>
     )

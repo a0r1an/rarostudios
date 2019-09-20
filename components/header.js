@@ -5,7 +5,6 @@ import Logo from '../components/logo'
 const HeaderArea = styled.header`
   color: ${({ theme }) => theme.colors.primary};
   text-align: center;
-  
   h1 {
     font-size: 0;
     background: white;
@@ -15,7 +14,7 @@ const HeaderArea = styled.header`
     margin: 0 auto;
   }
   img {
-    width: 100px;
+    width: 150px;
   }
 `
 class Header extends React.Component{
@@ -23,22 +22,19 @@ class Header extends React.Component{
     super(props);
     // Don't call this.setState() here!
     this.state = { navChecked: false };
-    this.navDecide = this.navDecide.bind(this);
+    this.navDecideState = this.navDecideState.bind(this);
   }
   componentDidMount(){
-    window.addEventListener('scroll', this.handleScroll.bind(this));
-   
+    window.addEventListener('scroll', this.checkNavOnScroll.bind(this));
   }
-  handleScroll(event) {
+  checkNavOnScroll(event) {
     if(this.state.navChecked){
       this.setState({navChecked: false})
     }
   }
-  navDecide(event){
+  navDecideState(event){
     const target = event.target;
     const value = target.type === 'checkbox' ? target.checked : target.value;
-    
-
     this.setState({
       navChecked: value
     });
@@ -47,9 +43,15 @@ class Header extends React.Component{
     return (
       <HeaderArea>
         <div className="logo">
-          <h1><Logo /></h1>
+          <h1>
+            <Link href="/index">
+              <a>
+                <Logo />
+              </a>
+            </Link>
+          </h1>
         </div>
-        <Navbar navChecked={this.state.navChecked} navDecide={this.navDecide} />
+        <Navbar navChecked={this.state.navChecked} navDecideState={this.navDecideState} />
       </HeaderArea>
     )
   }
