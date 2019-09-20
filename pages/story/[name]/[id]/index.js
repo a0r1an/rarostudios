@@ -2,7 +2,7 @@ import { withRouter } from 'next/router'
 import BlockContent from '@sanity/block-content-to-react'
 import styled from 'styled-components'
 
-import Header from '../../../../components/Header'
+import Header from '../../../../components/header'
 import {fetchSanityFeed} from '../../../../utils'
 
 const StoryPost = styled.div`

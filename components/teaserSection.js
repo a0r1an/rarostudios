@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import YoutubeTeaser from '../components/YoutubeTeaser'
+import YoutubeTeaser from '../components/youtubeTeaser'
 import SpreakerTeaser from '../components/spreakerTeaser'
 import StoriesTeaser from '../components/storiesTeaser'
 import styled from 'styled-components'

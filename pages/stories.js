@@ -1,4 +1,4 @@
-import Header from '../components/Header'
+import Header from '../components/header'
 import styled from 'styled-components'
 const StoryPage = styled.section`
   h1 {
