@@ -3,7 +3,7 @@ import dotenv from 'dotenv'
 dotenv.config({silent: true})
 
 const fetchYoutubeFeed = async() => {
-  // try {
+  try {
     let response = await axios(`${process.env.URL}/api/youtube`)
     let ytData = response.data.items
     let filteredData = [];
@@ -15,9 +15,9 @@ const fetchYoutubeFeed = async() => {
       })
     })
     return await filteredData;
-  // } catch(e) {
-  //   return []
-  // }
+  } catch(e) {
+    return []
+  }
 }
 
 const fetchSoundcloudFeed = async() => {
