@@ -10,5 +10,5 @@ export default async (req, res) => {
   feed.items.forEach(item => {
     data.push(item);
   });
-  res.end({data});
+  res.send({data});
 };

@@ -15,10 +15,10 @@ export default async(req, res) => {
   axios
     .get(`https://www.googleapis.com/youtube/v3/search?${queryParams}`)
     .then((response) => {
-      res.end(response.data);
+      res.send(response.data);
     })
     .catch((error) => {
-      res.end('Failed Youtube request');
+      res.send(error,'Failed Youtube request');
       
     })
 };
