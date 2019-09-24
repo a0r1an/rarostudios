@@ -18,7 +18,7 @@ export default async(req, res) => {
       res.send(response.data);
     })
     .catch((error) => {
-      console.log('error'); console.log(error);
+      res.send(error,'Failed Youtube request');
       
     })
 };

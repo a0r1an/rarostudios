@@ -1,4 +1,7 @@
 {
+  "routes": [
+    { "src": "/api/youtube", "headers": {"Access-Control-Allow-Origin": "*"} }
+  ],
   "build": {
     "env": {
       "SITE_TITLE": "@site_title",
