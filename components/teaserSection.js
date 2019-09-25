@@ -18,6 +18,7 @@ const TeaserArea = styled.section`
   .hiddenBackground{
     position: absolute;
     width: 90%;
+    left: 5%;
     height: 0%;
     background: #fff;
     /* top: 5%;
