@@ -2,7 +2,7 @@
   "routes": [
     { "src": "/api/youtube", "headers": {"Access-Control-Allow-Origin": "*"} },
     { "src": "/api/spreaker", "headers": {"Access-Control-Allow-Origin": "*"} },
-    { "src": "/api/sanity", "headers": {"Access-Control-Allow-Origin": "*"} }
+    { "src": "/api/sanity", "headers": {"Access-Control-Allow-Origin": "*","Access-Control-Allow-Headers": "*"} }
   ],
   "build": {
     "env": {
