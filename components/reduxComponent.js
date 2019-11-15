@@ -7,14 +7,15 @@ const ReduxWrapper = styled.header`
 `
 const reduxComponent = () => {
   const dispatch = useDispatch()
-  dispatch({
-    type: 'TICK',
-    light: true,
-    lastUpdate: Date.now(),
-  })
+  const nextPage = () => {
+    dispatch({
+      type: 'NEXT_SCENE',
+      currentScene: "scene-2",
+    })
+  }
   return (
     <ReduxWrapper>
-      redux wrappera
+      <button onClick={nextPage}>Click</button>
     </ReduxWrapper>
   )
 }

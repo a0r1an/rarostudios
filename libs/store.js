@@ -2,18 +2,42 @@ import { createStore, applyMiddleware } from 'redux'
 import { composeWithDevTools } from 'redux-devtools-extension'
 
 const initialState = {
-  lastUpdate: 0,
-  light: false,
-  count: 0,
+  "chosenPath": 0,
+  "currentScene": "scene-1",
+  "scenes": [
+    {
+      "scene-1": [
+        {
+          0: {
+            "content": 'here that goes',
+            // either stops here, goes to next view, choose to next view
+            "choiceGiven": true,
+            "choices": []
+          }
+        }
+      ]
+    },
+    {
+      "scene-2": [
+        {
+          0: {
+            "content": 'here that goes',
+            // either stops here, goes to next view, choose to next view
+            "choiceGiven": true,
+            "choices": []
+          }
+        }
+      ]
+    }
+  ]
 }
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case 'TICK':
+    case 'NEXT_SCENE':
       return {
         ...state,
-        lastUpdate: action.lastUpdate,
-        light: !!action.light,
+        currentScene: action.currentScene,
       }
     case 'INCREMENT':
       return {
