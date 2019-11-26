@@ -1,5 +1,8 @@
+import React from 'react'
+import { connect } from 'react-redux'
 import Header from '../components/header'
 import ReduxComponent from '../components/reduxComponent'
+import { startStory } from '../libs/store'
 import styled from 'styled-components'
 
 const StoryPage = styled.section`
@@ -13,7 +16,17 @@ const StoryPage = styled.section`
   }
 `
 class Stories extends React.Component{
-  
+  static getInitialProps({ reduxStore, req }) {
+    // const isServer = !!req
+    // reduxStore.dispatch(startStory(true))
+
+    return {}
+  }
+  componentDidMount() {
+    const { dispatch } = this.props
+    startStory(dispatch)
+    // const { dispatch } = this.props
+  }
   render(){
     return (
     <StoryPage>
@@ -26,4 +39,4 @@ class Stories extends React.Component{
   }
 }
 
-export default Stories
+export default connect()(Stories)

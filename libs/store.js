@@ -1,24 +1,22 @@
 import { createStore, applyMiddleware } from 'redux'
 import { composeWithDevTools } from 'redux-devtools-extension'
+import thunkMiddleware from 'redux-thunk'
 
-const initialState = {
+const exampleInitialState = {
+  "storyStart": false,
   "chosenPath": 0,
-  "currentScene": "scene-1",
-  "scenes": [
+  "currentScene": 0,
+  "scenes": [  
+    [
+      {
+        "content": 'here that goes',
+        // either stops here, goes to next view, choose to next view
+        "choiceGiven": true,
+        "choices": []
+      }
+    ],
     {
-      "scene-1": [
-        {
-          0: {
-            "content": 'here that goes',
-            // either stops here, goes to next view, choose to next view
-            "choiceGiven": true,
-            "choices": []
-          }
-        }
-      ]
-    },
-    {
-      "scene-2": [
+      2: [
         {
           0: {
             "content": 'here that goes',
@@ -31,13 +29,33 @@ const initialState = {
     }
   ]
 }
-
+export const nextScene = () => {
+  return {
+    type: 'NEXT_SCENE'
+  }
+}
+export const actionTypes = {
+  START_STORY: 'START_STORY',
+  NEXT_SCENE: 'NEXT_SCENE',
+  INCREMENT: 'INCREMENT',
+  DECREMENT: 'DECREMENT',
+  RESET: 'RESET',
+}
+// ACTIONS
+export const startStory = dispatch => {
+  return dispatch({ type: actionTypes.START_STORY, storyStart: true })
+}
 const reducer = (state = initialState, action) => {
   switch (action.type) {
+    case 'START_STORY':
+      return {
+        ...state,
+        storyStart: action.storyStart,
+      }
     case 'NEXT_SCENE':
       return {
         ...state,
-        currentScene: action.currentScene,
+        currentScene: state.currentScene + 1,
       }
     case 'INCREMENT':
       return {
@@ -59,10 +77,10 @@ const reducer = (state = initialState, action) => {
   }
 }
 
-export const initializeStore = (preloadedState = initialState) => {
+export function initializeStore(initialState = exampleInitialState) {
   return createStore(
     reducer,
-    preloadedState,
-    composeWithDevTools(applyMiddleware())
+    initialState,
+    composeWithDevTools(applyMiddleware(thunkMiddleware))
   )
 }
