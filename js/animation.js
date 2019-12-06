@@ -1,17 +1,12 @@
 import anime from "animejs"
 
 export const animateElement = (target,duration,propertyToAnimate,propertyValue,easing) => {
-  
-  if(propertyValue.includes(",")){
-    propertyValue = propertyValue.split(',');
-  }
-  console.log(document.querySelector(`.${target}`));
-  // anime({
-  //   targets: target,
-  //   duration: duration,
-  //   [propertyToAnimate]: propertyValue,
-  //   easing: easing,
-  // });
+  anime({
+    targets: target,
+    duration: duration,
+    [propertyToAnimate]: propertyValue,
+    easing: easing,
+  });
 }
 
 export const animateElements = (targets,duration,propertyToAnimate,propertyValue,easing) => {
@@ -33,19 +28,13 @@ export const animateElements = (targets,duration,propertyToAnimate,propertyValue
 }
 
 export const animateElementsKeyFrame = (targets,duration,propertyToAnimate,propertyValue,easing) => {
-  let colors = ['#ff4b4b','#ffb74b','#4bff59','#4b93ff','#b14bff']
-  let updatedPropertyValue = function(a,b) {
-    return anime.random(a, b);
-  }
-  
   anime({
     targets: targets,
     duration: duration,
-    delay: anime.stagger(200, {from: 'center'}),
+    direction: 'normal',
     keyframes: [
-      {[propertyToAnimate]: 0},
-      {[propertyToAnimate]: updatedPropertyValue(-10,propertyValue), color: colors[updatedPropertyValue(0,4)]},
-      {[propertyToAnimate]: 0, color: '#000000'},
+      {[propertyToAnimate]: '-170px'},
+      {[propertyToAnimate]: propertyValue},
     ],
     easing: easing,
   });

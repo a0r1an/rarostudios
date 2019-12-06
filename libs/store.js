@@ -29,7 +29,7 @@ const exampleInitialState = {
     }
   ]
 }
-export const nextScene = () => {
+export const goToNextScene = () => {
   return {
     type: 'NEXT_SCENE'
   }
@@ -41,10 +41,8 @@ export const actionTypes = {
   DECREMENT: 'DECREMENT',
   RESET: 'RESET',
 }
+
 // ACTIONS
-export const startStory = dispatch => {
-  return dispatch({ type: actionTypes.START_STORY, storyStart: true })
-}
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case 'START_STORY':
