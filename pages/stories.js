@@ -33,14 +33,19 @@ class Stories extends React.Component{
     <StoryPage>
       <Header />
       <div className="container">
-        <ReduxComponent currentScene={this.props.currentScene} dispatch={this.props.dispatch} />
+        <ReduxComponent storyStart={this.props.storyStart} currentScene={this.props.currentScene} scenes={this.props.scenes} chosenPath={this.props.chosenPath} dispatch={this.props.dispatch} />
       </div>
     </StoryPage>
     )
   }
 }
 const mapStateToProps = state => {
-  return { currentScene: state.currentScene }
+  return { 
+    currentScene: state.currentScene,
+    scenes: state.scenes,
+    chosenPath: state.chosenPath,
+    storyStart: state.storyStart
+  }
 }
 
 export default connect(mapStateToProps)(Stories)

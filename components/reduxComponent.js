@@ -1,5 +1,6 @@
 import React from 'react'
 import TitleScene from '../components/titleScene'
+import CurrentScene from '../components/CurrentScene'
 import StoryControl from '../components/storyControl'
 import styled from 'styled-components'
 
@@ -29,14 +30,18 @@ class reduxComponent extends React.Component {
   }
   render() {
     const currentScene = this.props.currentScene
+    const storyStart = this.props.storyStart
     return (
       <ReduxWrapper>
         <div className="sceneContainer">
-          {currentScene == 0 &&
-            <TitleScene dispatch={this.props.dispatch}/>
+        {storyStart &&
+          <TitleScene dispatch={this.props.dispatch}/>
+        }
+          {!storyStart &&
+            <CurrentScene dispatch={this.props.dispatch} scenes={this.props.scenes} chosenPath={this.props.chosenPath} currentScene={currentScene} />
           }
         </div>
-        {currentScene >= 1 &&
+        {!storyStart &&
           <StoryControl dispatch={this.props.dispatch}/>
         }
       </ReduxWrapper>

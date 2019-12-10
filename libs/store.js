@@ -3,35 +3,48 @@ import { composeWithDevTools } from 'redux-devtools-extension'
 import thunkMiddleware from 'redux-thunk'
 
 const exampleInitialState = {
-  "storyStart": false,
   "chosenPath": 0,
+  "storyStart": true,
   "currentScene": 0,
   "scenes": [  
     [
       {
-        "content": 'here that goes',
+        "src": '1.jpg',
         // either stops here, goes to next view, choose to next view
-        "choiceGiven": true,
-        "choices": []
+        "choiceGiven": false,
       }
     ],
-    {
-      2: [
-        {
-          0: {
-            "content": 'here that goes',
-            // either stops here, goes to next view, choose to next view
-            "choiceGiven": true,
-            "choices": []
-          }
-        }
-      ]
-    }
+    [
+      {
+        "src": 'here that goes',
+        // either stops here, goes to next view, choose to next view
+        "choiceGiven": true,
+      }
+    ],
+    [
+      {
+        "src": 'choice1',
+        // either stops here, goes to next view, choose to next view
+        "choiceGiven": false,
+      },
+      {
+        "src": 'choice2',
+        // either stops here, goes to next view, choose to next view
+        "choiceGiven": false,
+      }
+    ]
+    
   ]
 }
 export const goToNextScene = () => {
   return {
     type: 'NEXT_SCENE'
+  }
+}
+export const startStory = () => {
+  return {
+    type: 'START_STORY',
+    action: true
   }
 }
 export const actionTypes = {

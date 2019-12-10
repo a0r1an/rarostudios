@@ -1,7 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
 import anime from "animejs"
-import {goToNextScene} from '../libs/store'
+import {startStory} from '../libs/store'
+import {animateElementTillComplete} from '../js/animation'
 
 const TitleScreenWrapper = styled.div `
 
@@ -74,6 +75,7 @@ class titleScreen extends React.Component{
       }
     }).add({
       targets: this.elbowSvg,
+      duration: 500,
       scale: [
         .1, 1
       ],
@@ -96,14 +98,18 @@ class titleScreen extends React.Component{
       }
     })
   }
-  startStory = () => {
-    this
-      .props
-      .dispatch(goToNextScene());
+  beginStory = () => {
+    const dispatch = this.props.dispatch;
+    animateElementTillComplete(this.titleContainer,'1500','opacity',0,'easeInOutQuint').then(function(data){
+      dispatch(startStory());
+    });
+  }
+  componentWillUnmount(){
+    
   }
   render(){
     return(
-      <TitleScreenWrapper>
+      <TitleScreenWrapper ref={titleContainer => (this.titleContainer = titleContainer)}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           className="elbow"
@@ -184,11 +190,8 @@ class titleScreen extends React.Component{
               fill="#fff"/></g>
           </g>
         </svg>
-        <img
-          src="/static/img/elbowDrop/titleBackground.jpg"
-          alt="Title Screen"
-          className="titleBackground"/>
-        <button className="startButton" ref={startButton => (this.startButton = startButton)} onClick={this.startStory}>START
+        <img src="/static/img/elbowDrop/titleBackground.jpg" alt="Title Screen" className="titleBackground"/>
+        <button className="startButton" ref={startButton => (this.startButton = startButton)} onClick={this.beginStory}>START
           <svg
             className="startArrow"
             xmlns="http://www.w3.org/2000/svg"

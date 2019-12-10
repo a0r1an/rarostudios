@@ -9,6 +9,18 @@ export const animateElement = (target,duration,propertyToAnimate,propertyValue,e
   });
 }
 
+export const animateElementTillComplete = async (target,duration,propertyToAnimate,propertyValue,easing) => {
+  var a = anime({
+    targets: target,
+    duration: duration,
+    [propertyToAnimate]: propertyValue,
+    easing: easing,
+  });
+  await a.finished.then(function(){
+    return;
+  })
+}
+
 export const animateElements = (targets,duration,propertyToAnimate,propertyValue,easing) => {
   if(propertyValue.includes(",")){
     console.log('here');
