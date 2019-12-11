@@ -5,7 +5,7 @@ import {goToNextScene} from '../libs/store'
 import {animateElement} from '../js/animation'
 
 const CurrentSceneWrapper = styled.div `
-
+  opacity: 0;
   .titleBackground {
     position:absolute;
     z-index: 0;
@@ -61,7 +61,7 @@ class titleScreen extends React.Component{
     super(props);
   }
   componentDidMount() {
-    // animateElement(this.dropSvg,'500','opacity','1','easeInOutQuint')
+    animateElement(this.titleContainer,'500','opacity','1','easeInOutQuint')
   }
   
   startStory = () => {

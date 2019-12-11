@@ -27,6 +27,7 @@ const ReduxWrapper = styled.div `
 class reduxComponent extends React.Component {
   constructor(props) {
     super(props);
+    console.log(props);
   }
   render() {
     const currentScene = this.props.currentScene
@@ -34,16 +35,16 @@ class reduxComponent extends React.Component {
     return (
       <ReduxWrapper>
         <div className="sceneContainer">
-        {storyStart &&
-          <TitleScene dispatch={this.props.dispatch}/>
-        }
+          {storyStart &&
+            <TitleScene dispatch={this.props.dispatch}/>
+          }
           {!storyStart &&
             <CurrentScene dispatch={this.props.dispatch} scenes={this.props.scenes} chosenPath={this.props.chosenPath} currentScene={currentScene} />
           }
         </div>
-        {!storyStart &&
-          <StoryControl dispatch={this.props.dispatch}/>
-        }
+          {!storyStart &&
+            <StoryControl dispatch={this.props.dispatch} scenes={this.props.scenes} currentScene={currentScene} chosenPath={this.props.chosenPath}/>
+          }
       </ReduxWrapper>
     )
   }
