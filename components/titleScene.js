@@ -1,15 +1,13 @@
 import React from 'react'
 import styled from 'styled-components'
 import anime from "animejs"
-import {startStory} from '../libs/store'
-import {animateElementTillComplete} from '../js/animation'
 
 const TitleScreenWrapper = styled.div `
 
   .titleBackground {
     position:absolute;
     z-index: 0;
-    width: 350px;
+    width: 332px;
     top: 8px;
   }
   .elbow{
@@ -58,7 +56,6 @@ const TitleScreenWrapper = styled.div `
 `
 class titleScreen extends React.Component{
   componentDidMount() {
-    // animateElement(this.dropSvg,'500','opacity','1','easeInOutQuint')
     this.animateElementsTimeline()
   }
   animateElementsTimeline() {
@@ -99,17 +96,11 @@ class titleScreen extends React.Component{
     })
   }
   beginStory = () => {
-    const dispatch = this.props.dispatch;
-    animateElementTillComplete(this.titleContainer,'1500','opacity',0,'easeInOutQuint').then(function(data){
-      dispatch(startStory());
-    });
-  }
-  componentWillUnmount(){
-    
+    this.props.onStartButton();
   }
   render(){
     return(
-      <TitleScreenWrapper ref={titleContainer => (this.titleContainer = titleContainer)}>
+      <TitleScreenWrapper>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           className="elbow"

@@ -1,14 +1,11 @@
 import React from 'react'
 import styled from 'styled-components'
-import {MadButtonOff, MadButtonOn} from './svgButtons'
-import {animateElement} from '../js/animation'
+import {MadButton, SadButton} from './svgButtons'
+import TransitionGroup from 'react-addons-transition-group';
 
 const StoryControlWrapper = styled.div `
   display: inline-flex;
-  border: 1px solid #dfdfdf;
-  border-top: none;
-  width: 366px;
-  z-index: 1;
+  width: 100%;
   .smallControl {
     flex: 0 0 20%;
     cursor: pointer;
@@ -16,14 +13,37 @@ const StoryControlWrapper = styled.div `
     align-items: center;
     border-right: 1px solid #dfdfdf;
     justify-content: center;
+    transition: background 0.2s ease-in;
     &:nth-of-type(4) {
       border-right: none;
     }
     span {
       font-size: .75rem;
+      transition: transform 0.3s ease-in;
     }
     svg {
       vertical-align: middle;
+      transition: transform 0.2s ease-in;
+    }
+    &:hover {
+      background: #f9f9f9;
+    }
+    &:active {
+      background: #f1f1f1;
+    }
+    &:hover span, &:hover svg{
+      transform: translateX(-2px);
+    }
+    &:hover span, &:hover svg{
+      transform: translateX(-2px);
+    }
+  }
+  .smallControl--right {
+    &:hover span, &:hover svg{
+      transform: translateX(2px);
+    }
+    &:hover span, &:hover svg{
+      transform: translateX(2px);
     }
   }
   .largeControl {
@@ -32,6 +52,11 @@ const StoryControlWrapper = styled.div `
     padding: 8px 0 5px;
     border-right: 1px solid #dfdfdf;
     cursor: pointer;
+    height: 65px;
+    transition: 1.5s background;
+    &.inactive{
+      background: #fbfbfb;
+    }
     svg {
       width: 34px;
       display: block;
@@ -39,48 +64,55 @@ const StoryControlWrapper = styled.div `
     }
     span {
       font-size: .75rem;
+      color: #000;
     }
+  }
+  .inactive {
+    cursor: initial;
   }
 `
 class storyControl extends React.Component{
   constructor(props) {
     super(props);
   }
-  componentDidMount() {
-    animateElement(this.wrapperSelect,'1500','translateY',[-100,0],'easeInOutQuint')
-  }
-  
   handleMadClick(){
     console.log('this');
   }
+  handleBack = () => {
+    this.props.onBackButton();
+  }
+  handleNext = () => {
+    this.props.onNextButton();
+  }
   render(){
-    const scenes = this.props.scenes;
-    const currentScene = this.props.currentScene;
-    const chosenPath = this.props.chosenPath;
-    const choosePath =  scenes[currentScene][chosenPath].choiceGiven;
-    console.log(scenes[currentScene][chosenPath].choiceGiven);
+    const currentSceneChoiceGiven = this.props.currentSceneChoiceGiven;
     return(
-      <StoryControlWrapper ref={wrapperSelect => (this.wrapperSelect = wrapperSelect)}> 
-        <div className="smallControl">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="18"
-            height="18"
-            viewBox="4 5 16 16"><path d="M14 7l-5 5 5 5V7z"/><path fill="none" d="M24 0v24H0V0h24z"/></svg>
-          <span>BACK</span>
+      <StoryControlWrapper> 
+        <div className="smallControl" onClick={this.handleBack}>
+          {/* <TransitionGroup>
+              { !currentSceneChoiceGiven && 
+                <React.Fragment> */}
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="18"
+                    height="18"
+                    viewBox="4 5 16 16"><path d="M14 7l-5 5 5 5V7z"/><path fill="none" d="M24 0v24H0V0h24z"/></svg>
+                  <span>BACK</span>
+                {/* </React.Fragment>
+              }
+          </TransitionGroup> */}
         </div>
-        {choosePath ? (
-          <React.Fragment>
-            <MadButtonOn onClick={this.handleMadClick} />
-            <MadButtonOn onClick={this.handleMadClick} />
-          </React.Fragment>
-        ) : (
-          <React.Fragment>
-            <MadButtonOff />
-            <MadButtonOff />
-          </React.Fragment>
-        )}
-        <div className="smallControl"> 
+        <div className={"largeControl " + (!currentSceneChoiceGiven && 'inactive')} >
+          <TransitionGroup>
+            { currentSceneChoiceGiven && <MadButton onClick={this.handleMadClick} key="1" />}
+          </TransitionGroup>
+        </div>
+        <div className={"largeControl " + (!currentSceneChoiceGiven && 'inactive')} >
+          <TransitionGroup>
+            { currentSceneChoiceGiven && <SadButton onClick={this.handleMadClick} key="2" />}
+          </TransitionGroup>
+        </div>
+        <div className="smallControl smallControl--right" onClick={this.handleNext}> 
           <span>NEXT</span> 
           <svg xmlns = "http://www.w3.org/2000/svg" width="18" height="18" viewBox="4 5 16 16"> <path d="M10 17l5-5-5-5v10z"/> 
             <path fill = "none" d = "M0 24V0h24v24H0z" />

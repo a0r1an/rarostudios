@@ -6,6 +6,7 @@ const exampleInitialState = {
   "chosenPath": 0,
   "storyStart": true,
   "currentScene": 0,
+  "currentSceneChoiceGiven": false,
   "scenes": [  
     [
       {
@@ -16,7 +17,7 @@ const exampleInitialState = {
     ],
     [
       {
-        "src": 'here that goes',
+        "src": '2.jpg',
         // either stops here, goes to next view, choose to next view
         "choiceGiven": true,
       }
@@ -41,18 +42,26 @@ export const goToNextScene = () => {
     type: 'NEXT_SCENE'
   }
 }
+export const goBackPreviousScene = () => {
+  return {
+    type: 'PREV_SCENE'
+  }
+}
 export const startStory = () => {
   return {
-    type: 'START_STORY',
-    action: true
+    type: 'START_STORY'
+  }
+}
+export const restartStory = () => {
+  return {
+    type: 'RESTART_STORY'
   }
 }
 export const actionTypes = {
   START_STORY: 'START_STORY',
+  RESTART_STORY: 'RESTART_STORY',
   NEXT_SCENE: 'NEXT_SCENE',
-  INCREMENT: 'INCREMENT',
-  DECREMENT: 'DECREMENT',
-  RESET: 'RESET',
+  PREV_SCENE: 'PREV_SCENE',
 }
 
 // ACTIONS
@@ -61,27 +70,26 @@ const reducer = (state = initialState, action) => {
     case 'START_STORY':
       return {
         ...state,
-        storyStart: action.storyStart,
+        storyStart: false,
       }
-    case 'NEXT_SCENE':
+    case 'RESTART_STORY':
       return {
         ...state,
+        currentSceneChoiceGiven: false,
+        storyStart: true,
+      }  
+    case 'NEXT_SCENE':
+      console.log(state.scenes[state.currentScene + 1][state.chosenPath].choiceGiven);
+      return {
+        ...state,
+        currentSceneChoiceGiven: state.scenes[state.currentScene + 1][state.chosenPath].choiceGiven,
         currentScene: state.currentScene + 1,
       }
-    case 'INCREMENT':
+    case 'PREV_SCENE':
       return {
         ...state,
-        count: state.count + 1,
-      }
-    case 'DECREMENT':
-      return {
-        ...state,
-        count: state.count - 1,
-      }
-    case 'RESET':
-      return {
-        ...state,
-        count: initialState.count,
+        currentScene: state.currentScene - 1,
+        currentSceneChoiceGiven: state.scenes[state.currentScene -1][state.chosenPath].choiceGiven,
       }
     default:
       return state

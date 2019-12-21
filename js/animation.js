@@ -16,7 +16,7 @@ export const animateElementTillComplete = async (target,duration,propertyToAnima
     [propertyToAnimate]: propertyValue,
     easing: easing,
   });
-  await a.finished.then(function(){
+  await a.finished.then(() => {
     return;
   })
 }

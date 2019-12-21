@@ -33,7 +33,7 @@ class Stories extends React.Component{
     <StoryPage>
       <Header />
       <div className="container">
-        <ReduxComponent storyStart={this.props.storyStart} currentScene={this.props.currentScene} scenes={this.props.scenes} chosenPath={this.props.chosenPath} dispatch={this.props.dispatch} />
+        <ReduxComponent {...this.props} />
       </div>
     </StoryPage>
     )
@@ -44,7 +44,8 @@ const mapStateToProps = state => {
     currentScene: state.currentScene,
     scenes: state.scenes,
     chosenPath: state.chosenPath,
-    storyStart: state.storyStart
+    storyStart: state.storyStart,
+    currentSceneChoiceGiven: state.currentSceneChoiceGiven
   }
 }
 
