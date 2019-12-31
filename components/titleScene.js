@@ -1,9 +1,14 @@
 import React from 'react'
 import styled from 'styled-components'
 import anime from "animejs"
+import {animateElementTillComplete, animateElement} from '../js/animation'
 
 const TitleScreenWrapper = styled.div `
-
+  position: absolute;
+  z-index: 2;
+  height: 100%;
+  width: 332px;
+  top: 0;
   .titleBackground {
     position:absolute;
     z-index: 0;
@@ -55,6 +60,16 @@ const TitleScreenWrapper = styled.div `
   }
 `
 class titleScreen extends React.Component{
+  componentWillLeave (callback) {
+    animateElementTillComplete(this.titleContainer,'500','opacity',[1,0],'easeInOutQuint').then(()=>{
+      callback();
+    });
+  }
+  componentWillEnter (callback) {
+    animateElementTillComplete(this.titleContainer,'1500','opacity',[0,1],'easeInOutQuint').then(()=>{
+      callback();
+    });
+  }
   componentDidMount() {
     this.animateElementsTimeline()
   }
@@ -100,7 +115,7 @@ class titleScreen extends React.Component{
   }
   render(){
     return(
-      <TitleScreenWrapper>
+      <TitleScreenWrapper ref={titleContainer => (this.titleContainer = titleContainer)}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           className="elbow"

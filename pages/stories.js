@@ -45,7 +45,9 @@ const mapStateToProps = state => {
     scenes: state.scenes,
     chosenPath: state.chosenPath,
     storyStart: state.storyStart,
-    currentSceneChoiceGiven: state.currentSceneChoiceGiven
+    currentSceneChoiceGiven: state.currentSceneChoiceGiven,
+    storyScenes: state.storyScenes,
+    translateValue: state.translateValue
   }
 }
 

@@ -1,9 +1,10 @@
 import React from 'react'
 import TitleScene from '../components/titleScene'
-import CurrentScene from '../components/CurrentScene'
+import Scene from '../components/Scene'
 import StoryControl from '../components/storyControl'
+import TransitionGroup from 'react-addons-transition-group';
 import styled from 'styled-components'
-import {goBackPreviousScene,goToNextScene} from '../libs/store'
+import {goBackPreviousScene,goToNextScene,goToMadScene,goToSadScene,startStory,restartStory,addToScenes} from '../libs/store'
 import {animateElementTillComplete, animateElement} from '../js/animation'
 
 const ReduxWrapper = styled.div `
@@ -25,84 +26,74 @@ const ReduxWrapper = styled.div `
     margin: 0 auto;
     z-index: 2;
     overflow: hidden;
+    white-space: nowrap;
   }
-  .a{
-    border: 1px solid #dfdfdf;
-    border-top: none;
-    width: 350px;
-    height: 66px;
-    z-index: 1;
-    transform: translateY(-100px);
-  }
-  .currentSceneContainer{
-    position: relative;
-    z-index: 1;
-    opacity: 0;
-  }
-  .titleContainer{
-    position: absolute;
-    z-index: 2;
-    height: 100%;
-    width: 100%;
-    top: 0;
+  .sceneList {
+    margin: 0;
+    padding: 0;
+    list-style: none;
   }
 `
 class reduxComponent extends React.Component {
-  constructor(props) {
-    super(props);
+  componentDidMount(){
+    this.props.dispatch(addToScenes());
   }
   handleBackButton = () => {
     const dispatch = this.props.dispatch;
-    const tC = this.titleContainer;
-    const currentSceneContainer = this.currentSceneContainer
     if(this.props.currentScene == 0){
-      animateElementTillComplete(this.currentSceneContainer,'1500','opacity',0,'easeInOutQuint').then(function(){
-        animateElement(tC,'1500','opacity',1,'easeInOutQuint');
-      });
+      dispatch(restartStory());
       animateElement(this.wrapperSelect,'1500','translateY',[0,-100],'easeInOutQuint');
-    } else {
-      animateElement(currentSceneContainer,'1500','translateX',300,'easeInOutQuint');
-      animateElementTillComplete(currentSceneContainer,'1500','opacity',0,'easeInOutQuint').then(function(){
-        dispatch(goBackPreviousScene());
-        animateElement(currentSceneContainer,'1500','translateX',[-300,0],'easeInOutQuint');
-        animateElement(currentSceneContainer,'1500','opacity',1,'easeInOutQuint');
-      });
+      // AS TO NOT EXECUTE LINES BELOW
+      return;
     }
+    dispatch(goBackPreviousScene());
   }
   handleNextButton = () => {
-    const dispatch = this.props.dispatch;
-    const currentSceneContainer = this.currentSceneContainer
-    animateElement(currentSceneContainer,'1500','translateX',-300,'easeInOutQuint');
-    animateElementTillComplete(currentSceneContainer,'1500','opacity',0,'easeInOutQuint').then(function(){
-      dispatch(goToNextScene());
-      animateElement(currentSceneContainer,'1500','translateX',[300,0],'easeInOutQuint');
-      animateElement(currentSceneContainer,'1500','opacity',1,'easeInOutQuint');
-    });
+    this.props.dispatch(goToNextScene());
     // CHANGE STATE
     // ANIMATE CURRENT SCENE IN
+    // if(this.state.currentIndex === this.state.images.length - 1) {
+    //   return this.setState({
+    //     currentIndex: 0,
+    //     translateValue: 0
+    //   })
+    // }
   }
   handleStartButton = () => {
-    const cSC = this.currentSceneContainer;
-    animateElementTillComplete(this.titleContainer,'1500','opacity',0,'easeInOutQuint').then(function(){
-      animateElement(cSC,'1500','opacity',1,'easeInOutQuint');
-    });
-    animateElement(this.wrapperSelect,'1500','translateY',[-100,0],'easeInOutQuint');
+    this.props.dispatch(startStory());
+  }
+  handleMadButton = () => {
+    this.props.dispatch(goToMadScene());
+  }
+  handleSadButton = () => {
+    this.props.dispatch(goToSadScene());
   }
   render() {
     const currentScene = this.props.currentScene
+    const storyStart = this.props.storyStart
+    const storyScenes = this.props.storyScenes
+
     return (
       <ReduxWrapper>
         <div className="sceneContainer">
-          <div className="titleContainer" ref={titleContainer => (this.titleContainer = titleContainer)}>
-            <TitleScene dispatch={this.props.dispatch} onStartButton={this.handleStartButton}/>
-          </div>
-          <div className="currentSceneContainer" ref={currentSceneContainer => (this.currentSceneContainer = currentSceneContainer)}>
-            <CurrentScene dispatch={this.props.dispatch} scenes={this.props.scenes} chosenPath={this.props.chosenPath} currentScene={currentScene} />
-          </div>
+          <TransitionGroup>
+            { storyStart && <TitleScene {...this.props} onStartButton={this.handleStartButton}/>}
+          </TransitionGroup>
+          <ul className="sceneList"
+            style={{
+              transform: `translateX(${this.props.translateValue}px)`,
+              transition: 'transform ease-out 0.45s'
+            }}>
+            {storyScenes.map((scene,index)=>
+              <TransitionGroup key={index}>
+                { !storyStart && <Scene {...this.props} scene={scene} /> }
+              </TransitionGroup>
+            )}
+          </ul>
         </div>
-        <div className="a" ref={wrapperSelect => (this.wrapperSelect = wrapperSelect)}>
-          <StoryControl onBackButton={this.handleBackButton} onNextButton={this.handleNextButton} {...this.props} />
-        </div>
+        <TransitionGroup>
+          { !storyStart && <StoryControl onBackButton={this.handleBackButton} onMadButton={this.handleMadButton} onSadButton={this.handleSadButton} onNextButton={this.handleNextButton} {...this.props} />}
+        </TransitionGroup>
       </ReduxWrapper>
     )
   }

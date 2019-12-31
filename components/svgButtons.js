@@ -9,6 +9,10 @@ const SVGButton = styled.div `
     margin: 5px 0 0;
   }
 `
+const BackButtonContainer = styled.div`
+`
+const NextButtonContainer = styled.div`
+`
 export class MadButton extends React.Component {
   componentWillLeave (callback) {
     const svgButton = this.svgButton;
@@ -26,7 +30,7 @@ export class MadButton extends React.Component {
   }
   render(){
     return (
-      <SVGButton onClick={this.props.onClick} ref={svgButton => this.svgButton = svgButton}>
+      <SVGButton ref={svgButton => this.svgButton = svgButton}>
         <svg
           id="Layer_1"
           data-name="Layer 1"
@@ -113,20 +117,20 @@ export class SadButton extends React.Component {
   }
   render(){
     return (
-      <SVGButton onClick={this.props.onClick} ref={svgButton => this.svgButton = svgButton}>
+      <SVGButton ref={svgButton => this.svgButton = svgButton}>
         <svg id="sad" data-name="Sad" xmlns="http://www.w3.org/2000/svg"viewBox="0 0 544 544">
           <defs>
             <linearGradient id="linear-gradientsad" x1="135.98" y1="36.4" x2="408.02" y2="507.6" gradientUnits="userSpaceOnUse">
-              <stop offset="0" stop-color="#ffdc2a"/>
-              <stop offset="0.27" stop-color="#ffd32e"/>
-              <stop offset="0.71" stop-color="#ffb93a"/>
-              <stop offset="0.87" stop-color="#ffaf3f"/>
-              <stop offset="0.99" stop-color="#ff9a00"/>
+              <stop offset="0" stopColor="#ffdc2a"/>
+              <stop offset="0.27" stopColor="#ffd32e"/>
+              <stop offset="0.71" stopColor="#ffb93a"/>
+              <stop offset="0.87" stopColor="#ffaf3f"/>
+              <stop offset="0.99" stopColor="#ff9a00"/>
             </linearGradient>
             <linearGradient id="linear-gradient-2" x1="1187.92" y1="696.57" x2="1187.92" y2="528.93" gradientUnits="userSpaceOnUse">
-              <stop offset="0" stop-color="#1ebdd7"/>
-              <stop offset="0.71" stop-color="#0075be"/>
-              <stop offset="0.99" stop-color="#005b97"/>
+              <stop offset="0" stopColor="#1ebdd7"/>
+              <stop offset="0.71" stopColor="#0075be"/>
+              <stop offset="0.99" stopColor="#005b97"/>
             </linearGradient>
           </defs>
           <title>sad</title>
@@ -143,6 +147,48 @@ export class SadButton extends React.Component {
         </svg>
         <span>GET SAD</span>
       </SVGButton>   
+    );
+  }
+}
+
+export class BackButton extends React.Component {
+  render(){
+    return (
+      <BackButtonContainer>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="18"
+          height="18"
+          viewBox="4 5 16 16"><path d="M14 7l-5 5 5 5V7z"/><path fill="none" d="M24 0v24H0V0h24z"/></svg>
+        <span>BACK</span>
+      </BackButtonContainer>   
+    );
+  }
+}
+
+export class NextButton extends React.Component {
+  componentWillLeave (callback) {
+    const nextButton = this.nextButton;
+    animateElement(nextButton,'1500','translateY',["0","-20px"],'easeInOutQuint');
+    animateElementTillComplete(nextButton,'1500','opacity',[1,0],'easeInOutQuint').then(()=>{
+      callback();
+    });
+  }
+  componentWillEnter (callback) {
+    const nextButton = this.nextButton;
+    animateElement(nextButton,'1500','translateY',["-20px", "0"],'easeInOutQuint');
+    animateElementTillComplete(nextButton,'1500','opacity',[0,1],'easeInOutQuint').then(()=>{
+      callback();
+    });
+  }
+  render(){
+    return (
+      <NextButtonContainer ref={nextButton => this.nextButton = nextButton}>
+        <span>NEXT</span> 
+        <svg xmlns = "http://www.w3.org/2000/svg" width="18" height="18" viewBox="4 5 16 16"> <path d="M10 17l5-5-5-5v10z"/> 
+          <path fill = "none" d = "M0 24V0h24v24H0z" />
+        </svg>
+      </NextButtonContainer>   
     );
   }
 }
