@@ -1,11 +1,12 @@
 import anime from "animejs"
 
-export const animateElement = (target,duration,propertyToAnimate,propertyValue,easing) => {
+export const animateElement = (target,duration,propertyToAnimate,propertyValue,easing,delay=0) => {
   anime({
     targets: target,
     duration: duration,
     [propertyToAnimate]: propertyValue,
     easing: easing,
+    delay: delay
   });
 }
 
@@ -23,7 +24,6 @@ export const animateElementTillComplete = async (target,duration,propertyToAnima
 
 export const animateElements = (targets,duration,propertyToAnimate,propertyValue,easing) => {
   if(propertyValue.includes(",")){
-    console.log('here');
     propertyValue = propertyValue.split(',');
   }
   if(Array.isArray(propertyValue)){

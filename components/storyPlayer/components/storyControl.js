@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import {BackButton, NextButton, MadButton, SadButton} from './svgButtons'
-import {animateElementTillComplete} from '../js/animation'
+import {animateElementTillComplete} from '../../../libs/animation'
 import TransitionGroup from 'react-addons-transition-group';
 
 const StoryControlWrapper = styled.div `
@@ -13,11 +13,15 @@ const StoryControlWrapper = styled.div `
   height: 66px;
   z-index: 1;
   transform: translateY(-100px);
+  button:disabled {
+    color: inherit;
+  }
   .smallControl {
     flex: 0 0 20%;
     cursor: pointer;
     display: flex;
     align-items: center;
+    border: none;
     border-right: 1px solid #dfdfdf;
     justify-content: center;
     transition: background 0.2s ease-in;
@@ -39,6 +43,9 @@ const StoryControlWrapper = styled.div `
     &:active {
       background: #f1f1f1;
     }
+    &:focus {
+      outline: none;
+    }
     &:hover span, &:hover svg{
       transform: translateX(-2px);
     }
@@ -57,6 +64,7 @@ const StoryControlWrapper = styled.div `
   .largeControl {
     flex: 0 0 30%;
     text-align: center;
+    border: none;
     padding: 8px 0 5px;
     border-right: 1px solid #dfdfdf;
     cursor: pointer;
@@ -64,6 +72,9 @@ const StoryControlWrapper = styled.div `
     transition: 1.5s background;
     &.inactive{
       background: #fbfbfb;
+    }
+    &:focus{
+      outline: none;
     }
     svg {
       width: 34px;
@@ -75,6 +86,12 @@ const StoryControlWrapper = styled.div `
       color: #000;
     }
   }
+  .largeControl-mad:hover:not(.inactive) {
+    background: #ffbebe;
+  }
+  .largeControl-sad:hover:not(.inactive) {
+    background: #bec9ff;
+  }
   .inactive {
     cursor: initial;
   }
@@ -82,7 +99,6 @@ const StoryControlWrapper = styled.div `
 class storyControl extends React.Component{
   constructor(props) {
     super(props);
-    console.log(props);
   }
   componentWillLeave (callback) {
     const storyControl = this.storyControl;
@@ -99,6 +115,9 @@ class storyControl extends React.Component{
   handleMad = () => {
     this.props.onMadButton();
   }
+  updateMood = value => {
+    this.props.onUpdateMood(value);
+  }
   handleSad = () => {
     this.props.onSadButton();
   }
@@ -108,28 +127,30 @@ class storyControl extends React.Component{
   handleNext = () => {
     this.props.onNextButton();
   }
+  hoverEffect = (e) => {
+  }
   render(){
     const currentSceneChoiceGiven = this.props.currentSceneChoiceGiven;
     return(
       <StoryControlWrapper ref={storyControl => (this.storyControl = storyControl)}> 
-        <div className="smallControl" onClick={this.handleBack}>
+        <button className="smallControl" onClick={this.handleBack}  disabled={!this.props.moodComplete}>
           <BackButton/>
-        </div>
-        <div className={"largeControl " + (!currentSceneChoiceGiven ? 'inactive' : '')} onClick={this.handleMad}>
+        </button>
+        <button className={"largeControl largeControl-mad " + (!currentSceneChoiceGiven ? 'inactive' : '')} onClick={this.handleMad} onMouseEnter={this.hoverEffect} onMouseLeave={this.hoverEffect} disabled={!currentSceneChoiceGiven}>
           <TransitionGroup>
-            { currentSceneChoiceGiven && <MadButton />}
+            { currentSceneChoiceGiven && <MadButton updateMood={this.updateMood} />}
           </TransitionGroup>
-        </div>
-        <div className={"largeControl " + (!currentSceneChoiceGiven ? 'inactive' : '')} onClick={this.handleSad}>
+        </button>
+        <button className={"largeControl largeControl-sad " + (!currentSceneChoiceGiven ? 'inactive' : '')} onClick={this.handleSad} disabled={!currentSceneChoiceGiven}>
           <TransitionGroup>
-            { currentSceneChoiceGiven && <SadButton />}
+            { currentSceneChoiceGiven && <SadButton updateMood={this.updateMood} />}
           </TransitionGroup>
-        </div>
-        <div className={"smallControl smallControl--right " + (currentSceneChoiceGiven ? 'inactive' : '')} onClick={!currentSceneChoiceGiven ?this.handleNext: undefined}> 
+        </button>
+        <button className={"smallControl smallControl--right " + ((currentSceneChoiceGiven || this.props.lastScene) ? 'inactive' : '')} onClick={!currentSceneChoiceGiven ?this.handleNext: undefined} disabled={!this.props.moodComplete || this.props.lastScene}> 
           <TransitionGroup>
-            { !currentSceneChoiceGiven && <NextButton />}
+            { (!currentSceneChoiceGiven && !this.props.lastScene) && <NextButton />}
           </TransitionGroup>
-        </div> 
+        </button> 
       </StoryControlWrapper>
 
     )

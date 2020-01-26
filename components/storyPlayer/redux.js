@@ -1,12 +1,13 @@
 import React from 'react'
 import { initializeStore } from './store'
+import { initialState } from './reducer'
 
 const isServer = typeof window === 'undefined'
 const __NEXT_REDUX_STORE__ = '__NEXT_REDUX_STORE__'
 
 function getOrCreateStore(initialState) {
-  // Always make a new store if server, otherwise state is shared between requests
-  if (isServer) {
+   // Always make a new store if server, otherwise state is shared between requests
+   if (isServer) {
     return initializeStore(initialState)
   }
 
@@ -40,7 +41,7 @@ export default App => {
 
     constructor(props) {
       super(props)
-      this.reduxStore = getOrCreateStore(props.initialReduxState)
+      this.reduxStore = getOrCreateStore(initialState)
     }
 
     render() {

@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import anime from "animejs"
-import {animateElementTillComplete, animateElement} from '../js/animation'
+import {animateElementTillComplete} from '../../../libs/animation'
 
 const TitleScreenWrapper = styled.div `
   position: absolute;

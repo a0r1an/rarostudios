@@ -1,11 +1,11 @@
 import React from 'react'
-import TitleScene from '../components/titleScene'
-import Scene from '../components/Scene'
-import StoryControl from '../components/storyControl'
+import TitleScene from './components/titleScene'
+import Scene from './components/scene'
+import StoryControl from './components/storyControl'
 import TransitionGroup from 'react-addons-transition-group';
 import styled from 'styled-components'
-import {goBackPreviousScene,goToNextScene,goToMadScene,goToSadScene,startStory,restartStory,addToScenes} from '../libs/store'
-import {animateElementTillComplete, animateElement} from '../js/animation'
+import * as actions from './actions'
+import {animateElement} from '../../libs/animation'
 
 const ReduxWrapper = styled.div `
   text-align: center;
@@ -36,40 +36,40 @@ const ReduxWrapper = styled.div `
 `
 class reduxComponent extends React.Component {
   componentDidMount(){
-    this.props.dispatch(addToScenes());
+    this.props.dispatch(actions.addToScenes());
+  }
+  componentWillUnmount(){
+    this.props.dispatch(actions.resetState());
   }
   handleBackButton = () => {
     const dispatch = this.props.dispatch;
     if(this.props.currentScene == 0){
-      dispatch(restartStory());
+      dispatch(actions.restartStory());
       animateElement(this.wrapperSelect,'1500','translateY',[0,-100],'easeInOutQuint');
       // AS TO NOT EXECUTE LINES BELOW
       return;
     }
-    dispatch(goBackPreviousScene());
+    dispatch(actions.goBackPreviousScene());
   }
   handleNextButton = () => {
-    this.props.dispatch(goToNextScene());
-    // CHANGE STATE
-    // ANIMATE CURRENT SCENE IN
-    // if(this.state.currentIndex === this.state.images.length - 1) {
-    //   return this.setState({
-    //     currentIndex: 0,
-    //     translateValue: 0
-    //   })
-    // }
+    this.props.dispatch(actions.goToNextScene());
   }
   handleStartButton = () => {
-    this.props.dispatch(startStory());
+    this.props.dispatch(actions.startStory());
   }
   handleMadButton = () => {
-    this.props.dispatch(goToMadScene());
+    this.props.dispatch(actions.updateMood(false));
+    this.props.dispatch(actions.goToMadScene());
+
   }
   handleSadButton = () => {
-    this.props.dispatch(goToSadScene());
+    this.props.dispatch(actions.updateMood(false));
+    this.props.dispatch(actions.goToSadScene());
+  }
+  handleUpdateMood = value => {
+    this.props.dispatch(actions.updateMood(value));
   }
   render() {
-    const currentScene = this.props.currentScene
     const storyStart = this.props.storyStart
     const storyScenes = this.props.storyScenes
 
@@ -92,7 +92,7 @@ class reduxComponent extends React.Component {
           </ul>
         </div>
         <TransitionGroup>
-          { !storyStart && <StoryControl onBackButton={this.handleBackButton} onMadButton={this.handleMadButton} onSadButton={this.handleSadButton} onNextButton={this.handleNextButton} {...this.props} />}
+          { !storyStart && <StoryControl onBackButton={this.handleBackButton} onMadButton={this.handleMadButton} onSadButton={this.handleSadButton} onNextButton={this.handleNextButton} onUpdateMood={this.handleUpdateMood} {...this.props} />}
         </TransitionGroup>
       </ReduxWrapper>
     )

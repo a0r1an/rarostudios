@@ -3,7 +3,7 @@ import App, { Container } from 'next/app'
 import Link from 'next/link'
 import NProgress from 'nprogress'
 import Router from 'next/router'
-import withReduxStore from '../libs/redux'
+import withReduxStore from '../components/storyPlayer/redux'
 import { Provider } from 'react-redux'
 
 import { ThemeProvider } from 'styled-components'

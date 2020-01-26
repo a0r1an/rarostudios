@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import {animateElementTillComplete, animateElement} from '../js/animation'
+import {animateElementTillComplete, animateElement} from '../../../libs/animation'
 
 const SceneWrapper = styled.li `
   position: relative;
