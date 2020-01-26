@@ -1,0 +1,9 @@
+export const START_STORY = 'START_STORY';
+export const RESTART_STORY = 'RESTART_STORY';
+export const NEXT_SCENE = 'NEXT_SCENE';
+export const PREV_SCENE = 'PREV_SCENE';
+export const SAD_SCENE = 'SAD_SCENE';
+export const MAD_SCENE = 'MAD_SCENE';
+export const ADD_TO_SCENES = 'ADD_TO_SCENES';
+export const MOOD_COMPLETE = 'MOOD_COMPLETE';
+export const RESET_STATE = 'RESET_STATE';

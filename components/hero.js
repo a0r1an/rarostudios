@@ -2,7 +2,7 @@ import Link from 'next/link'
 import styled from 'styled-components'
 import Anime from 'react-anime'
 import anime from "animejs"
-import { resizeSVGParent } from '../js/resizeSVGParent.js'
+import { resizeSVGParent } from '../libs/resizeSVGParent.js'
 
 const HeroArea = styled.div`
   position: relative;

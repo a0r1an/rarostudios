@@ -1,5 +1,5 @@
 /* eslint-env jest */
-import {fetchYoutubeFeed, fetchSoundcloudFeed} from '../utils.js'
+import {fetchYoutubeFeed, fetchSoundcloudFeed} from '../libs/utils.js'
 
 describe('fetchYoutubeFeed', () => {
   it('returns an object', async () => {

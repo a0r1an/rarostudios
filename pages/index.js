@@ -1,7 +1,7 @@
 import Header from '../components/header'
 import Hero from '../components/hero'
 import TeaserSection from '../components/teaserSection'
-import {fetchYoutubeFeed, fetchSpreakerFeed, fetchSanityFeed} from '../utils'
+import {fetchYoutubeFeed, fetchSpreakerFeed, fetchSanityFeed} from '../libs/utils'
 
 const sanityQuery = `*[_type == "post"]{
   _id,

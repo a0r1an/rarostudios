@@ -3,6 +3,9 @@ import App, { Container } from 'next/app'
 import Link from 'next/link'
 import NProgress from 'nprogress'
 import Router from 'next/router'
+import withReduxStore from '../components/storyPlayer/redux'
+import { Provider } from 'react-redux'
+
 import { ThemeProvider } from 'styled-components'
 const theme = {
   colors: {
@@ -11,13 +14,12 @@ const theme = {
   }
 }
 Router.events.on('routeChangeStart', url => {
-  console.log(`Loading: ${url}`)
   NProgress.start()
 })
 Router.events.on('routeChangeComplete', () => NProgress.done())
 Router.events.on('routeChangeError', () => NProgress.done())
 
-export default class MyApp extends App {
+class MyApp extends App {
   static async getInitialProps ({ Component, router, ctx }) {
     let pageProps = {}
 
@@ -29,13 +31,14 @@ export default class MyApp extends App {
   }
 
   render () {
-    const { Component, pageProps } = this.props
+    const { Component, pageProps, reduxStore } = this.props
     return (
-      <Container>
+      <Provider store={reduxStore}>
         <ThemeProvider theme={theme}>
           <Component {...pageProps} />
         </ThemeProvider>
-      </Container>
+      </Provider>
     )
   }
 }
+export default withReduxStore(MyApp)

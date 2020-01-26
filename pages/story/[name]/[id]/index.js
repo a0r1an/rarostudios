@@ -3,7 +3,7 @@ import BlockContent from '@sanity/block-content-to-react'
 import styled from 'styled-components'
 
 import Header from '../../../../components/header'
-import {fetchSanityFeed} from '../../../../utils'
+import {fetchSanityFeed} from '../../../../libs/utils'
 
 const StoryPost = styled.div`
   .storyContainer {
